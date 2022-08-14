@@ -1,14 +1,16 @@
 package pro.sky.cours2HomeWork6_7_8;
 
+import java.util.Objects;
+
 public class Employee {
-    private String firstName;
+    private final String firstName;
 
-    private String secondName;
+    private final String lastName;
 
 
-    public Employee( String firstName, String secondName ) {
+    public Employee( String firstName, String lastName ) {
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
 
     }
 
@@ -16,37 +18,28 @@ public class Employee {
         return this.firstName;
     }
 
-    public String getSecondName() {
-        return this.secondName;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public void setFirstName( String firstName ) {
-        this.firstName = firstName;
-    }
 
-    public void setSecondName( String secondName ) {
-        this.secondName = secondName;
-    }
 
     @Override
     public String toString() {
         return "Employee name: " + this.firstName +
-                " Employee surname: " + this.secondName;
+                " Employee surname: " + this.lastName;
     }
 
     @Override
     public boolean equals( Object o ) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Employee)) return false;
         Employee employee = (Employee) o;
-        if (!firstName.equals(firstName)) return false;
-        return secondName.equals(secondName);
+        return getFirstName().equals(employee.getFirstName()) && getLastName().equals(employee.getLastName());
     }
 
+    @Override
     public int hashCode() {
-        int resalt = firstName.hashCode();
-        resalt = resalt + secondName.hashCode();
-        return resalt;
+        return Objects.hash(getFirstName(), getLastName());
     }
 }
