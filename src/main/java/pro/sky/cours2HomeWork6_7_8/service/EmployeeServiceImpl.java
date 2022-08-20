@@ -2,51 +2,49 @@ package pro.sky.cours2HomeWork6_7_8.service;
 
 import org.springframework.stereotype.Service;
 import pro.sky.cours2HomeWork6_7_8.Employee;
-import pro.sky.cours2HomeWork6_7_8.exeption.EmployeeAlreadyAddedExeption;
 import pro.sky.cours2HomeWork6_7_8.exeption.EmployeeNotFoundExeption;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    List<Employee> employees = new ArrayList<>();
+    Map<String, Employee> employees = new HashMap<>(Map.of(
+            "1", new Employee("1", "Александр", "Сергеев"),
+            "2", new Employee("2", "Иван", "Иванов")
+    ));
 
     @Override
-    public Employee addEmployee( String firstName, String lastName ) {
-        Employee emp = new Employee(firstName, lastName);
-        if (employees.contains(emp)) {
-            throw new EmployeeAlreadyAddedExeption();
-        } else {
-           employees.add(emp);
-        }
-        return emp;
+    public void addEmployee( Employee employee ) {
+        employees.put(employee.getId(), employee);
     }
 
     @Override
-    public Employee deleteEmployee( String firstName, String lastName ) {
-        Employee emp = new Employee(firstName, lastName);
-        if (employees.contains(emp)) {
-            employees.remove(emp);
+    public void deleteEmployee( Employee employee ) {
+        if (employee.equals(employee)) {
+            throw new EmployeeNotFoundExeption();
         } else {
+            employees.remove(employee);
+        }
+    }
+
+
+    @Override
+    public String searchEmployee( String id ) {
+        Employee employee = employees.get(id);
+        if (employee == null) {
             throw new EmployeeNotFoundExeption();
         }
-        return emp;
-    }
+            final String personInfo = " "+
+                    employee.getId() + " "
+                    +employee.getFirstName() + " "
+                    +employee.getLastName();
+    return personInfo;
+}
 
     @Override
-    public Employee searchEmployee( String firstName, String lastName ) {
-        Employee emp = new Employee(firstName, lastName);
-        if (employees.contains(emp)) {
-            return emp;
-        } else {
-            throw new EmployeeNotFoundExeption();
-        }
-    }
-
-    @Override
-    public List<Employee> findAll() {
+    public Map<String, Employee> findAll() {
         return employees;
     }
 

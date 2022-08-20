@@ -2,16 +2,18 @@ package pro.sky.cours2HomeWork6_7_8.service;
 
 import pro.sky.cours2HomeWork6_7_8.Employee;
 
-import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
 
-    Employee addEmployee( String firstName, String lastName );
+    void addEmployee( Employee employee );
 
-    Employee deleteEmployee( String firstName, String lastName );
 
-    Employee searchEmployee( String firstName, String lastName );
+    void deleteEmployee( Employee employee );
 
-    List<Employee> findAll();
+
+    String searchEmployee( String id );
+
+    Map<String, Employee> findAll();
 }
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.cours2HomeWork6_7_8.Employee;
 import pro.sky.cours2HomeWork6_7_8.service.EmployeeService;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -19,25 +19,36 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addEmployee( @RequestParam("firstName") String firstName,
-                                 @RequestParam("lastName") String lastName ) {
-        return employeeService.addEmployee(firstName, lastName);
+    public String addEmployee( @RequestParam("id") String id,
+                               @RequestParam("firstName") String firstName,
+                               @RequestParam("lastName") String lastName ) {
+        Employee employee = new Employee(
+                id,
+                firstName,
+                lastName);
+        employeeService.addEmployee(employee);
+        return "Сотрудник добавден";
     }
 
     @GetMapping("/remove")
-    public Employee deleteEmployee( @RequestParam("firstName") String firstName,
-                                    @RequestParam("lastName") String lastName ) {
-        return employeeService.deleteEmployee(firstName, lastName);
+    public String deliteEmployee( @RequestParam("id") String id,
+                                  @RequestParam("firstName") String firstName,
+                                  @RequestParam("lastName") String lastName ) {
+        Employee employee = new Employee(
+                id,
+                firstName,
+                lastName);
+        employeeService.deleteEmployee(employee);
+        return "Сотрудник удален";
     }
 
     @GetMapping("/find")
-    public Employee searchEmploee( @RequestParam("firstName") String firstName,
-                                   @RequestParam("lastName") String lastName ) {
-        return employeeService.searchEmployee(firstName, lastName);
+    public String searchEmployee( @RequestParam("id") String id) {
+        return employeeService.searchEmployee(id);
     }
 
     @GetMapping
-    public List<Employee> findAll() {
+    public Map<String, Employee> findAll() {
         return employeeService.findAll();
     }
 }
