@@ -1,11 +1,16 @@
 package pro.sky.cours2HomeWork6_7_8.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.cours2HomeWork6_7_8.Employee;
+import pro.sky.cours2HomeWork6_7_8.exeption.EmployeeAlreadyAddedExeption;
 import pro.sky.cours2HomeWork6_7_8.exeption.EmployeeNotFoundExeption;
+import pro.sky.cours2HomeWork6_7_8.exeption.InvalidInputExeption;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -29,12 +34,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addEmployee( Employee employee ) {
+
+        if (employeeValidate(employee.getFirstName(), employee.getLastName())) {
+            throw new InvalidInputExeption();
+        }
+
         employees.put(employee.getId(), employee);
     }
 
     @Override
     public void deleteEmployee( Employee employee ) {
-        if (employee.equals(employee)) {
+        if (employeeValidate(employee.getFirstName(), employee.getLastName())) {
+            throw new InvalidInputExeption();
+        } else if (employee.equals(employee)) {
             throw new EmployeeNotFoundExeption();
         } else {
             employees.remove(employee);
@@ -94,6 +106,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .thenComparing(Employee::getLastName)
                 )
                 .collect(Collectors.groupingBy(Employee::getDepartment));
+    }
+
+    private boolean employeeValidate( String firstName, String lastName ) {
+        return isAlpha(firstName) && isAlpha(lastName);
     }
 
 }
